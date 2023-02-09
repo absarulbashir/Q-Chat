@@ -48,8 +48,6 @@ app.post("/api/auth/signin" ,async (req,res) =>{
                               return true;
                             }
 
-                        }).then((mtch)=>{
-                            
                         })
                         .catch((err)=>{
                             console.log(err);
