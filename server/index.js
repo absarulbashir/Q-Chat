@@ -35,26 +35,45 @@ app.post("/api/auth/signin" ,async (req,res) =>{
             
         }
         else{
-            model.find({},async (err,data)=>{
+            model.find({}, (err,data)=>{
                 if(err){
                     console.log(err);
                 }
                 else{
-                    for(let i=0;i<data.length;i++){
-                        bcrypt.compare(password,data[i].password)
-                        .then((match)=>{
-                            if(match){
-                              res.json({error:"user already exists"});
-                              return true;
-                            }
+                    let isMatch = data.filter((el)=>{
+                        let match = bcrypt.compareSync(password,el.password);
+                        if(match){
+                            return el;
+                        }
+                    })
 
+                    if(isMatch.length===0){
+                        bcrypt.genSalt(10,(err,salt)=>{
+                            bcrypt.hash(password,salt,(err,hash)=>{
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    model({
+                                        username,
+                                        password:hash,
+                                        messages,
+                                        avatar,
+                                    }).save();
+                                }
+                            })
                         })
-                        .catch((err)=>{
-                            console.log(err);
+                        res.json({
+                            username,
+                            messages,
+                            avatar,
                         })
-                        
                     }
-                    
+                    else{
+                        res.json({
+                            error:"user already exists"
+                        })
+                    }
                 }
             })
         }
