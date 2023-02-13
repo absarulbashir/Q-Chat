@@ -23,6 +23,8 @@ mongoose.connect("mongodb://127.0.0.1:27017/Q-chat")
 
 //Handling the requests.
 
+
+//SIGNUP : 
 app.post("/api/auth/signin" ,async (req,res) =>{
 
     const {username,password,messages,avatar} = req.body;
@@ -30,7 +32,7 @@ app.post("/api/auth/signin" ,async (req,res) =>{
     model.find({username:username},(err,data)=>{
         if(data.length>=1){
             res.json({
-                error:"user already exists",
+                error:"user with this email or password already exists"
             })
             
         }
@@ -71,7 +73,7 @@ app.post("/api/auth/signin" ,async (req,res) =>{
                     }
                     else{
                         res.json({
-                            error:"user already exists"
+                            error:"user with this email or password already exists"
                         })
                     }
                 }
@@ -83,9 +85,41 @@ app.post("/api/auth/signin" ,async (req,res) =>{
         }
     })
 
-})
+}); //END SIGNUP SECTION...
 
+//LOGIN :
+
+app.post("/api/auth/login",(req,res)=>{
+    const {username,password} = req.body;
+    model.find({username},(err,data)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            if(data.length===0){
+                res.json({
+                    error:"No user found"
+                })
+            }
+            else{
+                let matched = bcrypt.compareSync(password,data[0].password);
+                if(matched){
+                    res.json({
+                        username,
+                        messages:data[0].messages,
+                        avatar:data[0].avatar
+                    })
+                }
+                else{
+                    res.json({
+                        error:"No user found"
+                    })
+                }
+            }
+        }
+    })
+})
 
 app.listen(5000,()=>{
     console.log("Listening at port 5000 ...");
-})
+});
