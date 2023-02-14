@@ -59,7 +59,7 @@ app.post("/api/auth/signin" ,async (req,res) =>{
                                     model({
                                         username,
                                         password:hash,
-                                        messages,
+                                        messages:{qchat:"Welcome"},
                                         avatar,
                                     }).save();
                                 }
@@ -67,7 +67,7 @@ app.post("/api/auth/signin" ,async (req,res) =>{
                         })
                         res.json({
                             username,
-                            messages,
+                            messages:{qchat:"Welcome"},
                             avatar,
                         })
                     }
@@ -108,13 +108,77 @@ app.post("/api/auth/login",(req,res)=>{
                         username,
                         messages:data[0].messages,
                         avatar:data[0].avatar
-                    })
+                    });
                 }
                 else{
                     res.json({
                         error:"No user found"
-                    })
+                    });
                 }
+            }
+        }
+    })
+});
+
+
+//getting users :
+
+app.get("/api/auth/getusers",(req,res)=>{
+    model.find({},(err,data)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.json({
+                data:data
+            });
+        }
+    })
+});
+
+//chatting : 
+
+app.post("/api/auth/chat",(req,res)=>{
+    const {sender,reciever,message} = req.body;
+    model.find({username:sender},(err,data)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            let keys=Object.keys(data[0].messages);
+
+            let isReciever = keys.filter((el)=>{
+                if(el===reciever){
+                    return el;
+                }
+            });
+
+            if(isReciever.length===1){
+                
+                let msg = data[0].messages;
+                msg[reciever].push(`sent:${message}`);
+                model.updateOne({username:sender},{$set:{
+                    messages:msg
+                }}).then(()=>{
+                    res.json({
+                        msg:"message sent successfully"
+                    })
+                }).catch((err)=>{
+                    console.log(err);
+                })
+            }
+            else{
+                let msg = data[0].messages;
+                msg[reciever]=[`sent:${message}`];
+                model.updateOne({username:sender},{$set:{
+                    messages:msg
+                }}).then(()=>{
+                    res.json({
+                        msg:"message sent successfully"
+                    })
+                }).catch((err)=>{
+                    console.log(err);
+                })
             }
         }
     })
