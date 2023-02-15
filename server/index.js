@@ -123,15 +123,18 @@ app.post("/api/auth/login",(req,res)=>{
 
 //getting users :
 
-app.get("/api/auth/getusers",(req,res)=>{
+app.post("/api/auth/getusers",(req,res)=>{
     model.find({},(err,data)=>{
         if(err){
             console.log(err);
         }
         else{
-            res.json({
-                data:data
-            });
+            let users = data.filter((el)=>{
+                if(el.username !== req.body.username){
+                    return el;
+                }
+            })
+            res.json({users});
         }
     })
 });
@@ -220,11 +223,9 @@ app.post("/api/auth/chat",(req,res)=>{
                 })
             }
 
-            
         }
     });
 
-    
 })
 
 app.listen(5000,()=>{
