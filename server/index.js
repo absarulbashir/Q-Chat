@@ -166,6 +166,26 @@ app.post("/api/auth/chat",(req,res)=>{
                 }).catch((err)=>{
                     console.log(err);
                 })
+
+                model.find({username:reciever},(err,data)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        let msg = data[0].messages;
+                        msg[sender].push(`recvd:${message}`);
+                        model.updateOne({username:reciever},{
+                            $set:{
+                                messages:msg,
+                            }
+                        }).then(()=>{
+                            console.log("recieved");
+                        }).catch((err)=>{
+                            console.log(err);
+                        })
+                    }
+                })
+
             }
             else{
                 let msg = data[0].messages;
@@ -179,9 +199,32 @@ app.post("/api/auth/chat",(req,res)=>{
                 }).catch((err)=>{
                     console.log(err);
                 })
+
+                model.find({username:reciever},(err,data)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        let msg = data[0].messages;
+                        msg[sender]=[`recvd:${message}`];
+                        model.updateOne({username:reciever},{
+                            $set:{
+                                messages:msg,
+                            }
+                        }).then(()=>{
+                            console.log("recieved");
+                        }).catch((err)=>{
+                            console.log(err);
+                        })
+                    }
+                })
             }
+
+            
         }
-    })
+    });
+
+    
 })
 
 app.listen(5000,()=>{
