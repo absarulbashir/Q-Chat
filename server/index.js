@@ -182,7 +182,6 @@ app.post("/api/auth/chat",(req,res)=>{
                                 messages:msg,
                             }
                         }).then(()=>{
-                            console.log("recieved");
                         }).catch((err)=>{
                             console.log(err);
                         })
@@ -215,7 +214,6 @@ app.post("/api/auth/chat",(req,res)=>{
                                 messages:msg,
                             }
                         }).then(()=>{
-                            console.log("recieved");
                         }).catch((err)=>{
                             console.log(err);
                         })
