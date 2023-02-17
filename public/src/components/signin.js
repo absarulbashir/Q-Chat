@@ -1,8 +1,9 @@
 import React,{ useContext, useState, useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import ToastCss from 'react-toastify/dist/ReactToastify.css';
 import { Context } from "./context";
-import Logo from "../images/logo.jpg";
+
+console.log(ToastCss)
 
 function Signin() {
   const context = useContext(Context);
@@ -18,16 +19,14 @@ function Signin() {
     toast("Hello how are you",{
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 3000,
-      style:{color:"white",backgroundColor:"indigo"}
+      style:{color:"white",backgroundColor:"rgb(119, 4, 71)",fontSize:"larger",fontFamily:"poppins"}
     })
   }
 
   return (
     <>
       <div id="signContainer">
-        <div id="signLogo">
-          <img src={Logo} alt="err" />
-        </div>
+
         <div id="signin">
           <label htmlFor="upload">
             <img
@@ -35,7 +34,6 @@ function Signin() {
               alt=""
               id="profile"
             />
-            <span class="material-symbols-outlined">add</span>
           </label>
           <input
             id="upload"
@@ -71,7 +69,7 @@ function Signin() {
           <a href="">Login</a>
         </div>
       </div>
-      <ToastContainer/>
+      <ToastContainer theme="dark" />
     </>
   );
 }
