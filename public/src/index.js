@@ -4,14 +4,19 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ContextApi from './components/context';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <>
   <ContextApi>
   <React.StrictMode>
     <App />
   </React.StrictMode>
   </ContextApi>
+  <ToastContainer theme="dark"/>
+  </>
 );
 
 // If you want to start measuring performance in your app, pass a function

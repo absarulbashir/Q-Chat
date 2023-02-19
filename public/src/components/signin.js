@@ -1,24 +1,19 @@
 import React,{ useContext, useState, useEffect } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import ToastCss from 'react-toastify/dist/ReactToastify.css';
 import { Context } from "./context";
-
+import {toast} from "react-toastify"
 
 function Signin() {
   const context = useContext(Context);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState("");
-  
-  useEffect(() => {
-    setAvatar(avatar);
-  }, [avatar]);
+
 
   const signin=()=>{
     let userSPace = username.indexOf(" ");
     let passSpace = password.indexOf(" ");
-    if(username.length<1 || password.length<=5 || avatar.length<=32){
-      toast("PLease fill in the credentials",{
+    if(username.length<=1 || password.length<=5 || avatar.length<=32){
+      toast("Please fill in the credentials",{
         position:toast.POSITION.BOTTOM_RIGHT,
         style:{background:"brown",color:"white",fontSize:"larger",fontFamily:"poppins"}
       });
@@ -46,11 +41,16 @@ function Signin() {
             />
           </label>
           <input type="text" id="avatar" placeholder="Enter random name" onChange={async(e)=>{
-            const res = await fetch(`https://api.multiavatar.com/${e.target.value}.png`);
-            const img = await res.JSON;
             let profile = document.querySelector("#profile");
-            profile.src=res.url;
-            setAvatar(`https://api.multiavatar.com/${e.target.value}.png`)
+            if(e.target.value ===""){
+              profile.src='https://api.multiavatar.com/1.png';
+              setAvatar('https://api.multiavatar.com/1.png');
+            }
+            else{
+              profile.src=`https://api.multiavatar.com/${e.target.value}.png`;
+              setAvatar(`https://api.multiavatar.com/${e.target.value}.png`);
+            }
+
           }} />
           <input
             type="text"
@@ -72,7 +72,6 @@ function Signin() {
           <a href="">Login</a>
         </div>
       </div>
-      <ToastContainer theme="dark" />
     </>
   );
 }

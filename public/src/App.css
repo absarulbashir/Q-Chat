@@ -88,6 +88,7 @@ nav h2{
     border: none;
     background: none;
     border-bottom: 1px solid black;
+    padding: 4px;
 }
 
 #username:focus{
@@ -116,6 +117,7 @@ nav h2{
     background-color: var(--placeholder);
     font-family: "poppins";
 }
+
 
 #signin input[type=file]{
     display: none;
