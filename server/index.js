@@ -32,7 +32,7 @@ app.post("/api/auth/signin" ,async (req,res) =>{
     model.find({username:username},(err,data)=>{
         if(data.length>=1){
             res.json({
-                error:"user with this email or password already exists"
+                error:"user with this username or password already exists"
             })
             
         }
@@ -73,7 +73,7 @@ app.post("/api/auth/signin" ,async (req,res) =>{
                     }
                     else{
                         res.json({
-                            error:"user with this email or password already exists"
+                            error:"user with this username or password already exists"
                         })
                     }
                 }
@@ -224,6 +224,36 @@ app.post("/api/auth/chat",(req,res)=>{
         }
     });
 
+})
+
+//getChat :
+app.post("/api/auth/getchat",(req,res)=>{
+    const {user,chat} = req.body;
+    model.find({username:user},(err,data)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            let keys=Object.keys(data[0].messages);
+
+            let isReciever = keys.filter((el)=>{
+                if(el===chat){
+                    return el;
+                }
+            });
+
+            if(isReciever.length===0){
+                res.json({
+                    err:"no chat"
+                })
+            }
+            else{
+                res.json({
+                    chat:data[0].messages[chat]
+                })
+            }
+        }
+    })
 })
 
 app.listen(5000,()=>{
