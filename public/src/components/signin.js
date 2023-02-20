@@ -1,6 +1,7 @@
 import React,{ useContext, useState, useEffect } from "react";
 import { Context } from "./context";
 import {toast} from "react-toastify"
+import { Link } from "react-router-dom";
 
 function Signin() {
   const context = useContext(Context);
@@ -60,6 +61,7 @@ function Signin() {
               setUsername(e.target.value);
             }}
           />
+
           <input
             type="password"
             placeholder="Enter your password"
@@ -69,7 +71,7 @@ function Signin() {
           />
           <button id="signSubmit" onClick={signin}>Signin</button>
           <p>Already have an account</p>
-          <a href="">Login</a>
+          <Link to="/login">Login</Link>
         </div>
       </div>
     </>
