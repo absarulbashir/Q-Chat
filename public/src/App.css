@@ -6,6 +6,7 @@ body{
     --bgcolor:rgb(230, 208, 219);
     --themeColor:rgb(119, 4, 71);
     --placeholder:rgb(235, 235, 235);
+    --chats:rgb(219, 20, 120);
     overflow-x: hidden;
     font-family: 'poppins';
 }
@@ -198,4 +199,42 @@ nav h2{
     justify-content: center;
     flex-direction: column;
     align-items: center;
+}
+
+#chatContainer{
+    width: 100vw;
+    height:90vh;
+    display: flex;
+}
+#users{
+    width:25vw;
+    height: 100%;
+    border-right: 3px solid var(--themeColor);
+}
+
+#chat{
+    width:75vw;
+    height:100%;
+}
+.user{
+    width: 100%;
+    height: 12vh;
+    display: flex;
+    align-items: center;
+    background-color: var(--bgcolor);
+    cursor: pointer;
+    border-bottom:2px solid var(--themeColor) ;
+    
+}
+.user img{
+    height:80%;
+    margin: 15px;
+}
+.user p{
+    font-size: larger;
+    margin: 15px;
+    color: black;
+}
+.user:hover{
+    background-color: rgb(212, 164, 188);
 }

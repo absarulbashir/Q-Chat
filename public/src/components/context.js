@@ -67,11 +67,28 @@ export default function contextApi(props){
           }
     }
 
+    const getusers = async (username)=>{
+      const response = await fetch("http://127.0.0.1:5000/api/auth/getusers", {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify({
+                username,
+            })
+          });
+
+        const data = await response.json();
+        return data;
+    }
+
     return(
         <>
         <Context.Provider value={{
             signin,
-            login
+            login,
+            getusers,
         }}>
             {props.children}
         </Context.Provider>
