@@ -83,12 +83,54 @@ export default function contextApi(props){
         return data;
     }
 
+    const getChat = async (user,chat)=>{
+      const response = await fetch("http://127.0.0.1:5000/api/auth/getchat", {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify({
+                user,
+                chat,
+            })
+          });
+
+        const data = await response.json();
+        if(data.chat){
+          return data.chat;
+        }
+        else{
+          return "no chat" 
+        }
+    }
+
+
+
+    const sendMsg = async (sender,recv,msg)=>{
+      const response = await fetch("http://127.0.0.1:5000/api/auth/chat", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+
+          body: JSON.stringify({
+              sender:sender,
+              reciever:recv,
+              message:msg
+          })
+        });
+      
+}
+
     return(
         <>
         <Context.Provider value={{
             signin,
             login,
             getusers,
+            getChat,
+            sendMsg
         }}>
             {props.children}
         </Context.Provider>
