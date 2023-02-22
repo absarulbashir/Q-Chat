@@ -1,15 +1,15 @@
 import React,{ useContext, useState } from "react";
 import { Context } from "./context";
 import {toast} from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const context = useContext(Context);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-
-  const login=()=>{
+  const login= async ()=>{
     let userSPace = username.indexOf(" ");
     let passSpace = password.indexOf(" ");
     if(username.length<=1 || password.length<=5){
@@ -25,7 +25,13 @@ function Login() {
       });
     }
     else{
-      context.login(username,password);
+      let login = await context.login(username,password);
+      if(login){
+        navigate("/");
+      }
+      else{
+        navigate("/login");
+      }
     }
   }
 

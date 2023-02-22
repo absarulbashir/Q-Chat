@@ -244,12 +244,12 @@ app.post("/api/auth/getchat",(req,res)=>{
 
             if(isReciever.length===0){
                 res.json({
-                    err:"no chat"
+                    err:"no chat",
                 })
             }
             else{
                 res.json({
-                    chat:data[0].messages[chat]
+                    chat:data[0].messages[chat],
                 })
             }
         }

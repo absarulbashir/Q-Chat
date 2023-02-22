@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState,useRef } from "react";
 import { createContext } from "react";
 import {toast} from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
 const Context = createContext();
 
-export default function contextApi(props){
+export default function ContextApi(props){
+    const islogin = useRef(false);
+    const [username,setUsername] = useState("");
+    const [avatar,setAvatar] = useState("");
 
     const signin = async (username,password,avatar)=>{
-        
+
         const response = await fetch("http://127.0.0.1:5000/api/auth/signin", {
             method: "POST",
             headers: {
@@ -35,10 +37,16 @@ export default function contextApi(props){
                 position:toast.POSITION.BOTTOM_RIGHT,
                 style:{background:"darkgreen",color:"white",fontSize:"medium",fontFamily:"poppins"}
               });
+              setUsername(username);
+              setAvatar(res.avatar);
+              islogin.current=true;
+              let bs64=btoa(password);
+              localStorage.setItem("details",JSON.stringify({username,password:bs64}))
+              return true;
           }
     }
 
-    const login = async (username,password)=>{
+    const login = async (usern,password)=>{
         
         const response = await fetch("http://127.0.0.1:5000/api/auth/login", {
             method: "POST",
@@ -47,7 +55,7 @@ export default function contextApi(props){
             },
 
             body: JSON.stringify({
-                username,
+                username:usern,
                 password,
             })
           });
@@ -58,13 +66,18 @@ export default function contextApi(props){
                 position:toast.POSITION.BOTTOM_RIGHT,
                 style:{background:"brown",color:"white",fontSize:"medium",fontFamily:"poppins"}
               });
+              return false;
           }
           else{
-            toast("Logged in Successfully",{
-                position:toast.POSITION.BOTTOM_RIGHT,
-                style:{background:"darkgreen",color:"white",fontSize:"medium",fontFamily:"poppins"}
-              });
+            setUsername(usern);
+            setAvatar(res.avatar);
+            islogin.current=true;
+            let bs64=btoa(password);
+            localStorage.setItem("details",JSON.stringify({username:usern,password:bs64}))
+            return true;
+
           }
+
     }
 
     const getusers = async (username)=>{
@@ -97,12 +110,7 @@ export default function contextApi(props){
           });
 
         const data = await response.json();
-        if(data.chat){
-          return data.chat;
-        }
-        else{
-          return "no chat" 
-        }
+          return data;
     }
 
 
@@ -130,7 +138,10 @@ export default function contextApi(props){
             login,
             getusers,
             getChat,
-            sendMsg
+            sendMsg,
+            username,
+            avatar,
+            islogin:islogin.current,
         }}>
             {props.children}
         </Context.Provider>

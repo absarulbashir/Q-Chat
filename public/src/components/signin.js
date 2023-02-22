@@ -1,16 +1,16 @@
 import React,{ useContext, useState, useEffect } from "react";
 import { Context } from "./context";
 import {toast} from "react-toastify"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signin() {
   const context = useContext(Context);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState("");
+  const navigate = useNavigate();
 
-
-  const signin=()=>{
+  const signin= async ()=>{
     let userSPace = username.indexOf(" ");
     let passSpace = password.indexOf(" ");
     if(username.length<=1 || password.length<=5 || avatar.length<=32){
@@ -26,7 +26,10 @@ function Signin() {
       });
     }
     else{
-      context.signin(username,password,avatar)
+      let login = await context.signin(username,password,avatar);
+      if(login){
+        navigate("/");
+      }
     }
   }
 
